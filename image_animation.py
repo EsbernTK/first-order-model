@@ -8,12 +8,12 @@ import matplotlib.animation as animation
 from skimage import img_as_ubyte
 from skimage.transform import resize
 from IPython.display import HTML
-from demo import load_checkpoints, make_animation
+from demo import load_checkpoints, make_animation, animate_image
 import warnings
 import argparse
 warnings.filterwarnings("ignore")
 
-
+from tqdm import tqdm
 def str2bool(v):
     if isinstance(v, bool):
        return v
@@ -43,13 +43,18 @@ if __name__ == '__main__':
     #Resize image and video to 256x256
 
     source_image = resize(source_image, (256, 256))[..., :3]
-    driving_video = [resize(frame, (256, 256))[..., :3] for frame in driving_video]
+    driving_video = np.array([resize(frame, (256, 256))[..., :3] for frame in driving_video])
 
     imageio.imwrite('./generated/downscaled_image.png',source_image)
     generator, kp_detector = load_checkpoints(config_path='config/vox-256.yaml',
                                 checkpoint_path='./models/vox-cpk.pth.tar')
 
     predictions = make_animation(source_image, driving_video, generator, kp_detector, relative=args.use_relative)
+    #predictions = []
+    #orig_img = driving_video[0]
+    #for i in tqdm(range(np.shape(driving_video)[0]-1)):
+    #    #print(np.shape(driving_video[i]))
+    #    predictions.append(animate_image(source_image, driving_video[i],orig_img, generator, kp_detector, relative=args.use_relative))
 
     #save resulting video
     imageio.mimsave('./generated/generated.mp4', [img_as_ubyte(frame) for frame in predictions])
