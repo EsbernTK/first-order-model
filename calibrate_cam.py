@@ -1,7 +1,10 @@
 import cv2
 from skimage.transform import resize
 import os
+<<<<<<< HEAD
 from demo import key_pressed
+=======
+>>>>>>> ac110e35654bd612bec6c90d38e6f2e3e78ce3c8
 if __name__ == '__main__':
 
     frame_dim = 256
@@ -30,7 +33,10 @@ if __name__ == '__main__':
             wind_x, wind_y, wind_height, wind_width = int(wind_x), int(wind_y), int(wind_height), int(wind_width)
     #wind_x, wind_y, wind_height, wind_width = 710, 480, 486, 486
 
+<<<<<<< HEAD
     pressed = False
+=======
+>>>>>>> ac110e35654bd612bec6c90d38e6f2e3e78ce3c8
     while (True):
         ret, frame = vid.read()
 
@@ -39,6 +45,7 @@ if __name__ == '__main__':
         frame = resize(frame, (frame_dim, frame_dim))
 
         cv2.imshow(capname, frame)
+<<<<<<< HEAD
         if (key_pressed("x")):
             break
         elif (key_pressed("w")):
@@ -78,6 +85,29 @@ if __name__ == '__main__':
         else:
             pressed = False
         cv2.waitKey(1)
+=======
+        if cv2.waitKey(1) & 0xFF == ord('x'):
+            break
+        if cv2.waitKey(1) & 0xFF == ord('w'):
+            wind_y = max(0, wind_y - inc)
+        if cv2.waitKey(1) & 0xFF == ord('s'):
+            wind_y = min(height - wind_height, wind_y + inc)
+        if cv2.waitKey(1) & 0xFF == ord('a'):
+            wind_x = max(0, wind_x - inc)
+        if cv2.waitKey(1) & 0xFF == ord('d'):
+            wind_x = min(width - wind_width, wind_x + inc)
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            wind_height = max(frame_dim, wind_height - inc)
+            wind_width = wind_height
+        if cv2.waitKey(1) & 0xFF == ord('e'):
+            wind_height = min(height - wind_y, wind_height + inc)
+            wind_width = wind_height
+        if cv2.waitKey(1) & 0xFF == ord('z'):
+            print(f"saved file {save_file}")
+            with(open(save_file,"w")) as f:
+                f.write(f"{wind_x},{wind_y},{wind_height},{wind_width}")
+>>>>>>> ac110e35654bd612bec6c90d38e6f2e3e78ce3c8
         #print(f"{wind_x}, {wind_y}, {wind_height}, {wind_width}")
 
     vid.release()
